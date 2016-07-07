@@ -20,7 +20,11 @@ import android.widget.Button;
 
 import java.io.File;
 
-public class MainActivity extends AppCompatActivity {
+import it.neokree.materialtabs.MaterialTab;
+import it.neokree.materialtabs.MaterialTabHost;
+import it.neokree.materialtabs.MaterialTabListener;
+
+public class MainActivity extends AppCompatActivity implements MaterialTabListener {
 
     private static final int CAMERA_REQUEST = 10;
     private static final String TAG = "MainActivity";
@@ -33,6 +37,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        MaterialTabHost tabBar = (MaterialTabHost) findViewById(R.id.tab_bar);
+        tabBar.addTab(tabBar.newTab().setText("HOME").setTabListener(this));
+        tabBar.addTab(tabBar.newTab().setText("PROFILE").setTabListener(this));
 
 
         if (ContextCompat.checkSelfPermission(MainActivity.this,
@@ -111,5 +119,19 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    /** Material Tab library stuff */
+    @Override
+    public void onTabSelected(MaterialTab tab) {
 
+    }
+
+    @Override
+    public void onTabReselected(MaterialTab tab) {
+
+    }
+
+    @Override
+    public void onTabUnselected(MaterialTab tab) {
+
+    }
 }
