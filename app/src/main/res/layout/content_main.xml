@@ -10,12 +10,24 @@
     tools:context="com.sixtel.instacam.MainActivity"
     tools:showIn="@layout/activity_main">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        app:theme="@style/Base.ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:backgroundTint="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        android:elevation="8dp"/>
 
     <it.neokree.materialtabs.MaterialTabHost
+        android:elevation="8dp"
         android:id="@+id/tab_bar"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         app:textColor="#FFFFFF"
+        app:hasIcons="true"
         app:primaryColor="@color/colorPrimary"
         app:accentColor="@color/colorAccent" />
 

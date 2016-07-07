@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements MaterialTabListen
     private static final String TAG = "MainActivity";
     private File mPhoto;
     private FeedFragment mFeedFragment;
+    private MaterialTabHost mTabBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +39,12 @@ public class MainActivity extends AppCompatActivity implements MaterialTabListen
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        MaterialTabHost tabBar = (MaterialTabHost) findViewById(R.id.tab_bar);
-        tabBar.addTab(tabBar.newTab().setText("HOME").setTabListener(this));
-        tabBar.addTab(tabBar.newTab().setText("PROFILE").setTabListener(this));
+
+        mTabBar = (MaterialTabHost) findViewById(R.id.tab_bar);
+        mTabBar.addTab(mTabBar.newTab().setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_home, null)).setTabListener(this));
+        mTabBar.addTab(mTabBar.newTab().setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_profile, null)).setTabListener(this));
 
 
         if (ContextCompat.checkSelfPermission(MainActivity.this,
@@ -122,6 +126,7 @@ public class MainActivity extends AppCompatActivity implements MaterialTabListen
     /** Material Tab library stuff */
     @Override
     public void onTabSelected(MaterialTab tab) {
+        mTabBar.setSelectedNavigationItem(tab.getPosition());
 
     }
 
