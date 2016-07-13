@@ -16,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageButton;
 
 import java.io.File;
 
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements MaterialTabListen
 
     private static final int CAMERA_REQUEST = 10;
     private static final String TAG = "MainActivity";
-    private File mPhoto;
+    private Photo mPhoto;
     private FeedFragment mFeedFragment;
     private ProfileFragment mProfileFragment;
     private MaterialTabHost mTabBar;
@@ -39,6 +40,22 @@ public class MainActivity extends AppCompatActivity implements MaterialTabListen
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+
+        ImageButton cameraFAB = (ImageButton) findViewById(R.id.camera_fab);
+        cameraFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+                mPhoto = new Photo();
+
+                i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mPhoto.getFile())); //lets the phone know where to save the photo
+
+                startActivityForResult(i, CAMERA_REQUEST);
+            }
+        });
+
 
 
         mTabBar = (MaterialTabHost) findViewById(R.id.tab_bar);
@@ -68,31 +85,13 @@ public class MainActivity extends AppCompatActivity implements MaterialTabListen
     }
 
 
-
-        public void onClick(View v) {
-            Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-            File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM); //directory path to where photos are stored
-            //random file name
-            mPhoto = new File(directory, "sample.jpeg");
-
-            i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mPhoto)); //lets the phone know where to save the photo
-
-            startActivityForResult(i, CAMERA_REQUEST);
-
-        }
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_REQUEST) {
             if (resultCode == RESULT_OK) {
-
                 Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setDataAndType(Uri.fromFile(mPhoto), "image/jpeg");
-
+                i.setDataAndType(Uri.fromFile(mPhoto.getFile()), "image/jpeg");
                 startActivity(i);
-
             }
         }
     }
@@ -118,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements MaterialTabListen
 
         return super.onOptionsItemSelected(item);
     }
+
 
 
 
