@@ -1,7 +1,6 @@
 package com.sixtel.instacam;
 
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -9,7 +8,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentManager;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -17,7 +16,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 
 import java.io.File;
 
@@ -31,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements MaterialTabListen
     private static final String TAG = "MainActivity";
     private File mPhoto;
     private FeedFragment mFeedFragment;
+    private ProfileFragment mProfileFragment;
     private MaterialTabHost mTabBar;
 
     @Override
@@ -60,8 +59,7 @@ public class MainActivity extends AppCompatActivity implements MaterialTabListen
         if (mFeedFragment == null) {
             mFeedFragment = new FeedFragment();
 
-            FragmentManager fm = getSupportFragmentManager();
-            fm.beginTransaction()
+            getSupportFragmentManager().beginTransaction()
                     .add(R.id.feed_container, mFeedFragment)
                     .commit();
 
@@ -126,7 +124,28 @@ public class MainActivity extends AppCompatActivity implements MaterialTabListen
     /** Material Tab library stuff */
     @Override
     public void onTabSelected(MaterialTab tab) {
-        mTabBar.setSelectedNavigationItem(tab.getPosition());
+        int position = tab.getPosition();
+        mTabBar.setSelectedNavigationItem(position);
+
+
+        Fragment fragment;
+        switch (position) {
+            case 0:
+                fragment = mFeedFragment;
+                break;
+            case 1:
+                if (mProfileFragment == null) {
+                    mProfileFragment = new ProfileFragment();
+                }
+                fragment = mProfileFragment;
+                break;
+            default:
+                fragment = mFeedFragment;
+        }
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.feed_container, fragment)
+                .commit();
 
     }
 

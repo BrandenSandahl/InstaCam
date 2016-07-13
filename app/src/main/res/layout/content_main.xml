@@ -20,7 +20,6 @@
         android:background="?attr/colorPrimary"
         app:popupTheme="@style/AppTheme.PopupOverlay"
         android:elevation="8dp"/>
-
     <it.neokree.materialtabs.MaterialTabHost
         android:elevation="8dp"
         android:id="@+id/tab_bar"
@@ -31,8 +30,24 @@
         app:primaryColor="@color/colorPrimary"
         app:accentColor="@color/colorAccent" />
 
-    <FrameLayout
-        android:id="@+id/feed_container"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/feed_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <ImageButton
+            android:src="@drawable/ic_camera"
+            android:elevation="8dp"
+            android:layout_margin="@dimen/vertical_small_margin"
+            android:background="@drawable/fab"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_width="@dimen/fab_size"
+            android:layout_height="@dimen/fab_size"/>
+    </RelativeLayout>
 </LinearLayout>
