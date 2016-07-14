@@ -18,6 +18,7 @@ import com.squareup.picasso.Picasso;
 public class NewPhotoActivity extends AppCompatActivity {
     private static final int CAMERA_REQUEST = 10;
     public static final String PHOTO_EXTRA = "PHOTO_EXTRA";
+    private static final String PHOTO_STATE_EXTRA = "PHOTO";
     private Photo mPhoto;
     private ImageView mPreview;
 
@@ -44,7 +45,13 @@ public class NewPhotoActivity extends AppCompatActivity {
             }
         });
 
-        launchCamera();
+        if (savedInstanceState != null) {
+            mPhoto = (Photo) savedInstanceState.getSerializable(PHOTO_STATE_EXTRA);
+        }
+
+        if (mPhoto == null) {
+            launchCamera();
+        }
 
     }
 
@@ -69,4 +76,10 @@ public class NewPhotoActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putSerializable(PHOTO_STATE_EXTRA, mPhoto);
+    }
 }
