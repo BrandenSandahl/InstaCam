@@ -51,6 +51,8 @@ public class NewPhotoActivity extends AppCompatActivity {
 
         if (mPhoto == null) {
             launchCamera();
+        } else {
+            loadThumbnail(mPhoto);
         }
 
     }
@@ -66,12 +68,17 @@ public class NewPhotoActivity extends AppCompatActivity {
         startActivityForResult(i, CAMERA_REQUEST);
     }
 
+    private void loadThumbnail(Photo photo) {
+        Picasso.with(this).load(mPhoto.getFile()).into(mPreview);
+
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_REQUEST) {
             if (resultCode == RESULT_OK) {
-                Picasso.with(this).load(mPhoto.getFile()).into(mPreview);
+                loadThumbnail(mPhoto);
             }
         }
     }
