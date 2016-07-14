@@ -26,7 +26,7 @@ import it.neokree.materialtabs.MaterialTabListener;
 
 public class MainActivity extends AppCompatActivity implements MaterialTabListener {
 
-    private static final int CAMERA_REQUEST = 10;
+    private static final int NEW_PHOTO_REQUEST = 10;
     private static final String TAG = "MainActivity";
     private Photo mPhoto;
     private FeedFragment mFeedFragment;
@@ -46,13 +46,9 @@ public class MainActivity extends AppCompatActivity implements MaterialTabListen
         cameraFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                Intent i = new Intent(MainActivity.this, NewPhotoActivity.class);
+                startActivityForResult(i, NEW_PHOTO_REQUEST );
 
-                mPhoto = new Photo();
-
-                i.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mPhoto.getFile())); //lets the phone know where to save the photo
-
-                startActivityForResult(i, CAMERA_REQUEST);
             }
         });
 
@@ -72,6 +68,15 @@ public class MainActivity extends AppCompatActivity implements MaterialTabListen
         }
 
 
+
+        if (ContextCompat.checkSelfPermission(MainActivity.this,
+                "android.permission.READ_EXTERNAL_STORAGE")
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MainActivity.this,
+                    new String[]{"android.permission.READ_EXTERNAL_STORAGE"},
+                    0);
+        }
+
         mFeedFragment = (FeedFragment) getSupportFragmentManager().findFragmentById(R.id.feed_container);
         if (mFeedFragment == null) {
             mFeedFragment = new FeedFragment();
@@ -87,11 +92,10 @@ public class MainActivity extends AppCompatActivity implements MaterialTabListen
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CAMERA_REQUEST) {
+        if (requestCode == NEW_PHOTO_REQUEST) {
             if (resultCode == RESULT_OK) {
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setDataAndType(Uri.fromFile(mPhoto.getFile()), "image/jpeg");
-                startActivity(i);
+                Photo photo = (Photo) data.getSerializableExtra(NewPhotoActivity.PHOTO_EXTRA);
+                mFeedFragment.addPhoto(photo);
             }
         }
     }

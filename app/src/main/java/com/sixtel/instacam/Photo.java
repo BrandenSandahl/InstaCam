@@ -3,14 +3,18 @@ package com.sixtel.instacam;
 import android.os.Environment;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.UUID;
 
 /**
  * Created by branden on 7/6/16.
  */
-public class Photo {
+public class Photo implements Serializable {
     private static final File sDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM); //directory path to where photos are stored
     private UUID mID;
+    private String mCaption;
+
+
 
     public Photo() {
         mID = UUID.randomUUID();
@@ -27,5 +31,11 @@ public class Photo {
         return new File(sDirectory, mID.toString());
     }
 
+    public String getCaption() {
+        return mCaption;
+    }
 
+    public void setCaption(String caption) {
+        mCaption = caption;
+    }
 }
