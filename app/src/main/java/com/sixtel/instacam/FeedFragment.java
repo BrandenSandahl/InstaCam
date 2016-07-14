@@ -2,6 +2,7 @@ package com.sixtel.instacam;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,9 +24,14 @@ public class FeedFragment extends Fragment {
     private FeedAdapter mAdapter;
 
     public FeedFragment() {
-        // Required empty public constructor
+        mPhotos = new ArrayList<>();
+        mAdapter = new FeedAdapter(getActivity(), mPhotos);
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,9 +40,7 @@ public class FeedFragment extends Fragment {
         View v =  inflater.inflate(R.layout.fragment_feed, container, false);
         RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.feed_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mPhotos = new ArrayList<>();
-        mPhotos.add(new Photo());
-        mAdapter = new FeedAdapter(getActivity(), mPhotos);
+
         recyclerView.setAdapter(mAdapter);
 
         return v;
