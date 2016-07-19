@@ -7,4 +7,5 @@
     <string name="title_activity_new_photo">NewPhotoActivity</string>
     <string name="new_caption_hint">Please Add a Caption...</string>
     <string name="save">SAVE</string>
+    <string name="fb_app_id">1831195980490227</string>
 </resources>
