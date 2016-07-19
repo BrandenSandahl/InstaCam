@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity implements MaterialTabListen
 
     private static final int NEW_PHOTO_REQUEST = 10;
     private static final String TAG = "MainActivity";
-    private Photo mPhoto;
     private FeedFragment mFeedFragment;
     private ProfileFragment mProfileFragment;
     private MaterialTabHost mTabBar;
@@ -59,6 +58,16 @@ public class MainActivity extends AppCompatActivity implements MaterialTabListen
         mTabBar.addTab(mTabBar.newTab().setIcon(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_profile, null)).setTabListener(this));
 
 
+        mFeedFragment = (FeedFragment) getSupportFragmentManager().findFragmentById(R.id.feed_container);
+        if (mFeedFragment == null) {
+            mFeedFragment = new FeedFragment();
+
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.feed_container, mFeedFragment)
+                    .commit();
+
+        }
+
         if (ContextCompat.checkSelfPermission(MainActivity.this,
                 "android.permission.CAMERA")
                 != PackageManager.PERMISSION_GRANTED) {
@@ -75,15 +84,6 @@ public class MainActivity extends AppCompatActivity implements MaterialTabListen
                     0);
         }
 
-        mFeedFragment = (FeedFragment) getSupportFragmentManager().findFragmentById(R.id.feed_container);
-        if (mFeedFragment == null) {
-            mFeedFragment = new FeedFragment();
-
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.feed_container, mFeedFragment)
-                    .commit();
-
-        }
     }
 
 
