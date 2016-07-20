@@ -12,6 +12,9 @@ import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
 import com.facebook.model.GraphUser;
+import com.facebook.widget.LoginButton;
+
+import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
@@ -23,6 +26,9 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
+        loginButton.setReadPermissions("user_birthday");  //asks for birthday permission too
 
         mUiLifecycleHelper = new UiLifecycleHelper(this, new Session.StatusCallback() {
             @Override
@@ -36,8 +42,25 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void onSessionStateChanged(final Session session, SessionState state, Exception exception) {
-
         if (state.isOpened()) {
+
+            /* This asks for a new permission to be added once a user has already signed in */
+            List<String> permissions = Session.getActiveSession().getPermissions();
+            boolean hasBirthdayPermission = false;
+            for (String permission : permissions) {
+                if (permission.equals("user_birthday")) {
+                    hasBirthdayPermission = true;
+                }
+            }
+
+            if (!hasBirthdayPermission) {
+                Session.NewPermissionsRequest permissionsRequest = new Session.NewPermissionsRequest(this, "user_birthday");
+                session.requestNewReadPermissions(permissionsRequest);
+                return;
+            }
+            /* end of permission part */
+
+
             Bundle parameters = new Bundle();
             parameters.putString("fields", "picture,first_name,last_name,birthday");
 
