@@ -45,10 +45,10 @@ public class NewPhotoFragment extends ContractFragment<NewPhotoFragment.Contract
             @Override
             public void onClick(View v) {
                 mPhoto.setCaption(caption.getText().toString());
+                mPhoto.setUser(User.getCurrentUser());
                 getContract().finishedPhoto(mPhoto);
             }
         });
-
 
         if (mPhoto == null) {
             getContract().launchCamera();

@@ -11,9 +11,11 @@ import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
+import com.facebook.model.GraphObject;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.LoginButton;
 
+import java.text.ParseException;
 import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
@@ -60,18 +62,21 @@ public class LoginActivity extends AppCompatActivity {
             }
             /* end of permission part */
 
-
             Bundle parameters = new Bundle();
             parameters.putString("fields", "picture,first_name,last_name,birthday");
 
             Request request = new Request(session, "/me", parameters, HttpMethod.GET, new Request.Callback() {
                 @Override
                 public void onCompleted(Response response) {
-                    if (session == Session.getActiveSession()){
+                    if (session == Session.getActiveSession()) {
                         if (response.getGraphObject() != null) {
-                            Log.d(TAG, response.getGraphObject().toString());
-//                            Intent i = new Intent(LoginActivity.this, MainActivity.class);
-//                            startActivity(i);
+                            try {
+                                User.setCurrentUser(response.getGraphObject());
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(i);
                         }
                     }
                     if (response.getError() != null) {
